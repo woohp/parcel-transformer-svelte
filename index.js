@@ -3,6 +3,7 @@ const { Transformer } = require('@parcel/plugin');
 const { default: SourceMap } = require('@parcel/source-map');
 const { relativeUrl } = require('@parcel/utils');
 const { compile, preprocess } = require('svelte/compiler.js');
+const sveltePreprocess = require('svelte-preprocess');
 const { load, preSerialize, postDeserialize } = require('./loadConfig');
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -68,7 +69,11 @@ exports.default = new Transformer({
 
     if (config && config.hydrated.preprocess) {
       const preprocessed = await handleError(sourceFileName, () =>
-        preprocess(code, config.hydrated.preprocess, compilerOptions),
+        preprocess(
+          code,
+          sveltePreprocess(config.hydrated.preprocess),
+          compilerOptions,
+        ),
       );
       code = preprocessed.toString();
     }

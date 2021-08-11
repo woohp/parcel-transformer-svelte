@@ -51,7 +51,7 @@ exports.load = async function load({ config, options, logger }) {
     contents.compilerOptions = contents.compilerOptions || contents.compiler;
   }
 
-  return configHydrator(
+  await configHydrator(
     {
       compilerOptions: {
         css: false,
@@ -64,6 +64,7 @@ exports.load = async function load({ config, options, logger }) {
     config,
     options,
   );
+  return config.result;
 };
 
 exports.preSerialize = function preSerialize(config) {
